@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMBrowser95</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='1.5' y='.5' width='13' height='10' fill='%23c0c0c0' stroke='%23000'/%3E%3Crect x='3' y='2' width='10' height='7' fill='%23008080'/%3E%3Crect x='.5' y='12.5' width='15' height='3' fill='%23c0c0c0' stroke='%23000'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="desktop" id="desktop">
+    <div class="desk-icons">
+      <button class="desk-icon" id="desk-app" title="Dubbelklik om te openen"><span data-icon="network" class="big"></span><span>Netwerk&shy;omgeving</span></button>
+      <button class="desk-icon" id="desk-creds" title="Dubbelklik om credentials te beheren"><span data-icon="key" class="big"></span><span>Credentials</span></button>
+      <button class="desk-icon" id="desk-server" title="Dubbelklik om SMBserver95 te openen"><span data-icon="netlink" class="big"></span><span>SMBserver95</span></button>
+    </div>
+
+    <div class="window maximized" id="win">
+      <div class="titlebar" id="titlebar">
+        <span data-icon="network"></span>
+        <span class="title-text" id="title-text">SMBrowser95</span>
+        <div class="title-btns">
+          <button id="tb-min" title="Minimaliseren"><span data-icon="w-min"></span></button>
+          <button id="tb-max" title="Maximaliseren / herstellen"><span data-icon="w-max"></span></button>
+          <button id="tb-close" title="Sluiten"><span data-icon="w-close"></span></button>
+        </div>
+      </div>
+
+      <div class="menubar" id="menubar">
+        <button data-menu="file"><u>B</u>estand</button>
+        <button data-menu="view">B<u>e</u>eld</button>
+        <button data-menu="tools"><u>E</u>xtra</button>
+        <button data-menu="help"><u>H</u>elp</button>
+      </div>
+
+      <div class="toolbar" id="toolbar"></div>
+
+      <div class="tabstrip" id="tabs"></div>
+      <div class="tabpanel">
+      <div class="addressbar">
+        <label for="addr">Adres</label>
+        <div class="addr field"><span id="addr-icon"></span><input id="addr" spellcheck="false" autocomplete="off" title="Typ een UNC-pad (\\host\share\map) en druk op Enter"></div>
+        <label for="cred-select">Verbinden als</label>
+        <span id="cred-swatch"></span>
+        <select id="cred-select" title="Credential voor deze host"></select>
+        <label for="list-filter">Zoek</label>
+        <input id="list-filter" type="text" class="list-filter" spellcheck="false" autocomplete="off" placeholder="filter…">
+      </div>
+
+      <div class="panes" id="panes">
+        <div class="tree-pane" id="tree-pane">
+          <div class="pane-head">Alle hosts</div>
+          <div class="tree-search"><input id="host-filter" type="text" placeholder="Zoek host of share…" spellcheck="false" autocomplete="off"></div>
+          <div class="tree-filters">
+            <label class="check" title="Verberg hosts waarop poort 445 dicht is of die nog niet gescand zijn"><input type="checkbox" id="f-open">Alleen SMB open <span id="f-open-n"></span></label>
+            <label class="check" title="Alleen hosts met minstens één share die de credential van dit tabblad kan lezen"><input type="checkbox" id="f-shares">Alleen met toegankelijke share <span id="f-shares-n"></span></label>
+          </div>
+          <div class="tree field" id="tree" tabindex="0"></div>
+        </div>
+        <div class="splitter" id="splitter" title="Sleep om de breedte aan te passen"></div>
+        <div class="list-pane">
+          <div id="list-head"></div>
+          <div class="list field" id="list" tabindex="0"></div>
+        </div>
+      </div>
+      </div>
+
+      <div class="statusbar">
+        <div class="panel" id="st-objects"></div>
+        <div class="panel" id="st-info"></div>
+        <div class="panel grow" id="st-msg"></div>
+        <div class="panel" id="st-cred"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="window minimized" id="win-server">
+    <div class="titlebar inactive" id="titlebar-server">
+      <span data-icon="netlink"></span>
+      <span class="title-text">SMBserver95</span>
+      <div class="title-btns">
+        <button id="tb-server-min" title="Minimaliseren"><span data-icon="w-min"></span></button>
+        <button id="tb-server-max" title="Maximaliseren / herstellen"><span data-icon="w-max"></span></button>
+        <button id="tb-server-close" title="Sluiten"><span data-icon="w-close"></span></button>
+      </div>
+    </div>
+    <div class="srv-body" id="srv-body"></div>
+    <div class="statusbar">
+      <div class="panel grow" id="srv-status-bar">Gestopt</div>
+    </div>
+  </div>
+
+  <div class="taskbar">
+    <button class="start" id="start-btn"><span data-icon="winlogo"></span><b>Start</b></button>
+    <div class="task-sep"></div>
+    <button class="task-btn active" id="task-win"><span data-icon="network"></span><span>SMBrowser95</span></button>
+    <button class="task-btn" id="task-server"><span data-icon="netlink"></span><span>SMBserver95</span></button>
+    <div class="tray"><span data-icon="netlink" title="Netwerk"></span><span id="clock"></span></div>
+  </div>
+
+  <div id="menu-root"></div>
+  <div id="dialog-root"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
