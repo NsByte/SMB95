@@ -3,7 +3,7 @@
 
 A Windows 95-style SMB browser for penetration testers. Add a credential and an IP range, and SMBrowser95 finds every host with port 445 open, logs in, and lists all the shares. Then browse them like it's 1995.
 
-<img width="1024" height="622" alt="Screenshot 2026-10-28 at 14 31 39" src="https://github.com/user-attachments/assets/c27bd6fd-9f3e-4bd8-8b7c-c6e690118871" />
+
 
 
 ---
@@ -101,7 +101,7 @@ On the first run, dependencies are installed automatically if they are missing.
 
 | Main view | SMB server & hash capture |
 |-----------|--------------------------|
-| ![Main](docs/screenshot-main.png) | ![Server](docs/screenshot-server.png) |
+| ![Main](<img width="1024" height="622" alt="Screenshot 2026-10-28 at 14 31 39" src="https://github.com/user-attachments/assets/c27bd6fd-9f3e-4bd8-8b7c-c6e690118871" />) | ![Server](docs/screenshot-server.png) |
 
 | File search | Bookmarks in tree |
 |-------------|------------------|
