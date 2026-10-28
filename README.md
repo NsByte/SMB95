@@ -9,7 +9,7 @@ A Windows 95-style SMB browser for penetration testers. Add a credential and an 
 ## Features
 
 **Browse**
-- Tree on the left with collapsible **Network** and **Favourites** sections
+- Tree on the left with collapsible **Network** and **Favorites** sections
 - File list on the right with icons, sizes, timestamps and permission badges per entry
 - Per-directory read/write access probing shown inline
 - Inline preview for text, images, Office documents, PDFs and more — without downloading
@@ -112,7 +112,7 @@ On the first run, dependencies are installed automatically if they are missing.
   </tr>
   <tr>
     <td><em>File search</em></td>
-    <td><em>Favourites in tree</em></td>
+    <td><em>ites in tree</em></td>
   </tr>
 </table>
 
