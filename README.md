@@ -1,31 +1,147 @@
-# SMB95
+# SMBrowser95
 
-Blader door SMB-shares op je netwerk vanuit de browser, in een interface die eruitziet als Windows 95.
+A Windows 95-style SMB browser for penetration testers. Add a credential and an IP range, and SMBrowser95 finds every host with port 445 open, logs in, and lists all the shares. Then browse them like it's 1995.
 
-Je slaat een paar credentials op en plakt er een IP-range in. SMB95 zoekt dan uit welke hosts SMB draaien en welke shares je kunt lezen. Daarna klik je erdoorheen zoals in de oude Verkenner. Elk bestandstype heeft een eigen kleur, zodat executables, scripts en bestanden als `unattend.xml` of `.kdbx` direct opvallen.
+![SMBrowser95 main window](docs/screenshot-main.png)
 
-## Starten
+---
 
-Je hebt Python 3.8 of nieuwer nodig.
+## Features
+
+**Browse**
+- Tree on the left with collapsible **Network** and **Favourites** sections
+- File list on the right with icons, sizes, timestamps and permission badges per entry
+- Per-directory read/write access probing shown inline
+- Inline preview for text, images, Office documents, PDFs and more — without downloading
+- Colour-coded file categories: executables, scripts, config files, databases, archives — so `unattend.xml`, `.kdbx` and `.ps1` stand out immediately
+- Hidden files toggle, category filter chips, column sorting
+
+**Credentials & scanning**
+- Multiple saved credentials (username/password, NT hash, or null session)
+- One tab per credential — compare what each user can see side by side
+- Scan ranges like `10.0.0.0/24` or `10.0.0.1-50`, CIDR blocks, hostnames
+- Import targets from **nmap XML** or **Nessus XML** exports
+- SMB dialect, signing status and guest-session detection per host
+
+**File operations**
+- Download single files or **bulk-download a selection as ZIP**
+- Upload, new folder, new text file, cut/copy/paste across shares, rename, delete
+- UNC path copy per file, folder or share
+
+**Search**
+- File search across an entire share — glob patterns like `*.config` or just `password` (auto-wrapped as `*password*`)
+- Results are navigable: double-click opens the containing folder
+
+**Notes & bookmarks**
+- Per-host notes (shown in the tree as a badge)
+- Bookmarks with a dedicated collapsible section in the left tree — add from the toolbar or by right-clicking any host or share
+
+**SMB server**
+- Host a share from a local directory with one click
+- Captures incoming **NTLM hashes** (NTLMv1 and NTLMv2) in JtR/Hashcat format
+- Logs every connection with timestamp, IP, port and SMB dialect
+- Export hashes directly to a Hashcat-ready file
+- SMB2/3 toggle for Windows 10/11 compatibility
+
+---
+
+## Requirements
+
+- Python 3.8+
+- [impacket](https://github.com/fortra/impacket) ≥ 0.12
+- [Flask](https://flask.palletsprojects.com/) ≥ 3.0
 
 ```bash
-git clone https://github.com/<gebruikersnaam>/SMB95.git
-cd SMB95
+pip install -r requirements.txt
+```
+
+---
+
+## Getting started
+
+```bash
+git clone https://github.com/<your-username>/SMBrowser95.git
+cd SMBrowser95
 python3 smbbrowser.py start
 ```
 
-Open daarna http://127.0.0.1:8445. De eerste keer installeert hij zelf wat hij nodig heeft.
+Open **http://127.0.0.1:8445** in your browser.
 
-Stoppen doe je met `python3 smbbrowser.py stop`. Wil je er vanaf een andere computer bij, start dan met `--expose`. Je krijgt dan een wachtwoord te zien.
+```bash
+# Stop
+python3 smbbrowser.py stop
 
-## Gebruik
+# Status
+python3 smbbrowser.py status
 
-1. Klik op **Credentials** en sla een gebruiker op. Laat de naam leeg voor een anonieme sessie. Een NT-hash werkt ook.
-2. Klik op **Targets** en plak IP-adressen of ranges, zoals `10.0.0.0/24` of `10.0.0.1-50`.
-3. Dubbelklik op een host en daarna op een share. Met de rechtermuisknop kun je bestanden downloaden en meer.
+# Expose on the network (adds a random password)
+python3 smbbrowser.py start --expose
 
-Alle opties, sneltoetsen en technische details staan in [docs/TECHNICAL.md](docs/TECHNICAL.md).
+# Custom port
+python3 smbbrowser.py start --port 9000
+```
 
-## Let op
+On the first run, dependencies are installed automatically if they are missing.
 
-Gebruik SMB95 alleen op netwerken waarvoor je toestemming hebt. Je credentials worden lokaal opgeslagen in de map `data/`. Zet die map nooit in git.
+---
+
+## Quickstart
+
+1. Click **Credentials** → add a user (leave username empty for a null session, or paste an NT hash)
+2. Click **Targets** → paste IPs, ranges or import an nmap/Nessus XML file
+3. Click **Scan** → SMBrowser95 probes port 445 and logs in
+4. Double-click a host in the tree to expand its shares, then double-click a share to browse it
+5. Right-click anything for a context menu with all available actions
+
+---
+
+## Screenshots
+
+| Main view | SMB server & hash capture |
+|-----------|--------------------------|
+| ![Main](docs/screenshot-main.png) | ![Server](docs/screenshot-server.png) |
+
+| File search | Bookmarks in tree |
+|-------------|------------------|
+| ![Search](docs/screenshot-search.png) | ![Bookmarks](docs/screenshot-bookmarks.png) |
+
+---
+
+## Data & privacy
+
+All data (credentials, scan results, notes, bookmarks) is stored locally in `data/`. This folder is listed in `.gitignore` and is never committed.
+
+```
+data/
+├── store.json        ← hosts + credentials
+├── notes.json        ← per-host notes
+├── bookmarks.json    ← saved bookmarks
+├── smbserver.json    ← SMB server config
+└── smbshare/         ← files served by the built-in SMB server
+```
+
+> **Only use SMBrowser95 on networks you are authorised to test.**
+
+---
+
+## Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| `F5` | Refresh |
+| `Backspace` | Go up one level |
+| `Alt + ←` / `Alt + →` | Back / Forward |
+| `Enter` | Open selected item |
+| `F2` | Rename |
+| `Del` | Delete |
+| `Ctrl + X` / `C` / `V` | Cut / Copy / Paste |
+| `Ctrl + A` | Select all |
+| `Ctrl + F` | Filter list |
+| `Esc` | Clear multi-selection |
+| `Alt + Enter` | Properties |
+
+---
+
+## License
+
+MIT
